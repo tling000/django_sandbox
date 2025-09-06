@@ -8,5 +8,11 @@ if ! flake8 . --exclude=.venv,project01/memos/migrations,project01/project01/set
     exit 1
 fi
 
+# pytest
+if ! pytest; then
+    echo "Pre-push checks failed! Aborting push."
+    exit 1
+fi
+
 echo "All checks passed!"
 exit 0
