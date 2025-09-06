@@ -6,7 +6,6 @@ from rest_framework.views import APIView
 
 from .use_cases import MemoUseCase
 from .serializers import MemoSerializer
-from .models import Memo
 
 
 class MemoDetailView(APIView):

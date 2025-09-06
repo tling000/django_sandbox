@@ -1,5 +1,6 @@
 from .models import Memo
 
+
 class MemoService:
     model_cls = Memo
 
