@@ -1,0 +1,12 @@
+#!/bin/sh
+
+echo "Running pre-push checks..."
+
+# 静的解析
+if ! flake8 . --exclude=.venv,project01/memos/migrations,project01/project01/settings.py; then
+    echo "Pre-push checks failed! Aborting push."
+    exit 1
+fi
+
+echo "All checks passed!"
+exit 0
