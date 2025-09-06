@@ -2,6 +2,7 @@ from typing import Any, Dict, List
 from .services import MemoService
 from .serializers import MemoSerializer
 
+
 class MemoUseCase:
     service = MemoService()
     serializer = MemoSerializer
