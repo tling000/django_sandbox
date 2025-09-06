@@ -10,8 +10,12 @@ from .serializers import MemoSerializer
 
 class MemoDetailView(APIView):
     def get(self, request: Request, id: int) -> HttpResponse:
-        use_case = MemoUseCase()
-        data = use_case.fetch(memo_id=id)
+        try:
+            use_case = MemoUseCase()
+            data = use_case.fetch(memo_id=id)
+        except Exception as e:
+            return Response({"Error": f"Internal server error: {str(e)}"},
+                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
         return Response(data=data, status=status.HTTP_200_OK)
 
@@ -22,13 +26,24 @@ class MemoDetailView(APIView):
         pass
 
     def delete(self, request: Request, id: int) -> HttpResponse:
-        pass
+        try:
+            use_case = MemoUseCase()
+            use_case.delete(memo_id=id)
+        except Exception as e:
+            return Response({"Error": f"Internal server error: {str(e)}"},
+                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class MemoListView(APIView):
     def get(self, request: Request) -> HttpResponse:
-        use_case = MemoUseCase()
-        data = use_case.fetch_all()
-        serializer = MemoSerializer(data, many=True)
+        try:
+            use_case = MemoUseCase()
+            data = use_case.fetch_all()
+            serializer = MemoSerializer(instance=data, many=True)
+        except Exception as e:
+            return Response({"Error": f"Internal server error: {str(e)}"},
+                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
         return Response(data=serializer.data, status=status.HTTP_200_OK)

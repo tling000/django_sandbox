@@ -11,3 +11,6 @@ class MemoService:
     def fetch_all(self):
         memos = self.model_cls.objects.all()
         return memos
+
+    def delete(self, memo_id):
+        self.model_cls.objects.get(id=memo_id).delete()
