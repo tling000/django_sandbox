@@ -43,6 +43,4 @@ jobs:
             pip install -r requirements.txt
             pip install pytest pytest-django
         - name: Run pytest
-          env:
-            DJANGO_SETTINGS_MODULE: project01.settings
           run: pytest
