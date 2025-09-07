@@ -25,3 +25,24 @@ jobs:
       - name: Run flake8
         run: |
           flake8 . --exclude=.venv,project01/memos/migrations,project01/project01/settings.py
+
+  test:
+      runs-on: ubuntu-latest
+      strategy:
+        matrix:
+          python-version: ["3.9"]
+      steps:
+        - uses: actions/checkout@v4
+        - name: Set up Python ${{ matrix.python-version }}
+          uses: actions/setup-python@v3
+          with:
+            python-version: ${{ matrix.python-version }}
+        - name: Install dependencies
+          run: |
+            python -m pip install --upgrade pip
+            pip install -r requirements.txt
+            pip install pytest pytest-django
+        - name: Run pytest
+          env:
+            DJANGO_SETTINGS_MODULE: project01.settings
+          run: pytest
