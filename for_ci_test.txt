@@ -1,1 +1,0 @@
-Github Actionsのテスト用のPRを作成するため作成。
