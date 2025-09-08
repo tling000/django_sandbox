@@ -5,7 +5,6 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from .use_cases import MemoUseCase
-from .serializers import MemoSerializer
 
 
 class MemoDetailView(APIView):
@@ -18,9 +17,6 @@ class MemoDetailView(APIView):
                             status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
         return Response(data=data, status=status.HTTP_200_OK)
-
-    def post(self, request: Request) -> HttpResponse:
-        pass
 
     def patch(self, request: Request, id: int) -> HttpResponse:
         pass
@@ -41,9 +37,18 @@ class MemoListView(APIView):
         try:
             use_case = MemoUseCase()
             data = use_case.fetch_all()
-            serializer = MemoSerializer(instance=data, many=True)
         except Exception as e:
             return Response({"Error": f"Internal server error: {str(e)}"},
                             status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-        return Response(data=serializer.data, status=status.HTTP_200_OK)
+        return Response(data=data, status=status.HTTP_200_OK)
+
+    def post(self, request: Request) -> HttpResponse:
+        try:
+            use_case = MemoUseCase()
+            data = use_case.create(data=request.data)
+        except Exception as e:
+            return Response({"Error": f"Internal server error: {str(e)}"},
+                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        return Response(data=data, status=status.HTTP_201_CREATED)
