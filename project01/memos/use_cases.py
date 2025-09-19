@@ -7,6 +7,11 @@ class MemoUseCase:
     service = MemoService()
     serializer = MemoSerializer
 
+    def create(self, data: Dict[str, Any]) -> Dict[str, Any]:
+        memo = self.service.create(data)
+        result = self.serializer(instance=memo).data
+        return result
+
     def fetch(self, memo_id: int) -> Dict[str, Any]:
         memo = self.service.fetch(memo_id)
         result = self.serializer(instance=memo).data
@@ -17,8 +22,8 @@ class MemoUseCase:
         result = self.serializer(instance=memos, many=True).data
         return result
 
-    def create(self, data: Dict[str, Any]) -> Dict[str, Any]:
-        memo = self.service.create(data)
+    def patch(self, memo_id: int, update_data: Dict[str, Any]) -> Dict[str, Any]:
+        memo = self.service.patch(memo_id, update_data)
         result = self.serializer(instance=memo).data
         return result
 

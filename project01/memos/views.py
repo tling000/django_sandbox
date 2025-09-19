@@ -19,7 +19,14 @@ class MemoDetailView(APIView):
         return Response(data=data, status=status.HTTP_200_OK)
 
     def patch(self, request: Request, id: int) -> HttpResponse:
-        pass
+        try:
+            use_case = MemoUseCase()
+            data = use_case.patch(memo_id=id, update_data=request.data)
+        except Exception as e:
+            return Response({"Error": f"Internal server error: {str(e)}"},
+                            status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        return Response(data=data, status=status.HTTP_200_OK)
 
     def delete(self, request: Request, id: int) -> HttpResponse:
         try:
