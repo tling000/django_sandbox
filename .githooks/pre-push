@@ -2,17 +2,25 @@
 
 echo "Running pre-push checks..."
 
+# 仮想環境に入る
+if [ -f ".venv/bin/activate" ]; then
+    . .venv/bin/activate
+else
+    echo "Virtual environment not found! Aborting push."
+    exit 1
+fi
+
 # 静的解析
 if ! flake8 . --exclude=.venv,project01/memos/migrations,project01/project01/settings.py; then
-    echo "Pre-push checks failed! Aborting push."
+    echo "Flake8 checks failed! Aborting push."
     exit 1
 fi
 
 # pytest
 if ! pytest; then
-    echo "Pre-push checks failed! Aborting push."
+    echo "Tests failed! Aborting push."
     exit 1
 fi
 
-echo "All checks passed!"
+echo "All pre-push checks passed!"
 exit 0
